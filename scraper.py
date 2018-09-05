@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 from requests import get
 import re
 
@@ -7,34 +7,34 @@ base_url = f"https://www.moj-posao.net/Pretraga-Poslova/?keyword={keyword}&area=
 
 print("\nsearch results\n")
 
-response = get(base_url)
-html_soup = BeautifulSoup(response.text, 'html.parser')
+r = get(base_url)
+html_soup = bs(r.text, "html.parser")
 
-try: # Make sure there are more than one page, otherwise, set to 1.
-  num_pages = int(re.findall("\d+$", html_soup.find(class_ = "last icon").a.get("href"))[0])
+# Make sure there are more than one page, otherwise, set to 1.
+try:
+    num_pages = int(re.findall("\d+$", html_soup.find(class_="last icon").a.get("href"))[0])
 except AttributeError:
-  num_pages = 1
-#print(num_pages)
+    num_pages = 1
 
+# Build up a URL list
 url_list = ["{}&page={}".format(base_url, str(page)) for page in range(1, num_pages + 1)]
-#print(url_list)
-
 
 """
-featured = html_soup.find(True, {"id":["featured-jobs"]})
-searchlist = html_soup.find(True, {"class":["searchlist"]})
-
-job_company = searchlist.find_all(True, {"class":["job-company"]})
-job_position = searchlist.find_all(True, {"class":["job-title", "job-position"]})
-job_location = searchlist.find_all(True, {"class":["job-location"]})
-job_deadline = searchlist.find_all(True, {"class":["deadline"]})
-
-for a, b, c, d in zip(job_company, job_position, job_location, job_deadline):
-  print(a.text.strip())
-  print(b.text.strip())
-  print("Lokacija: ", c.text.strip())
-  print(d.text.strip())
-  print("-----------------------------")
-
-https://stackoverflow.com/questions/26497722/scrape-multiple-pages-with-beautifulsoup-and-python
+for i in html_soup.find_all(True, {"class": ["job-position"]}):
+    print(i.a.get("href"))
 """
+# Make dictionary
+stack = []
+for url in url_list:
+    rp = get(url)
+    soup = bs(rp.text, "html.parser")
+    job_position = soup.find_all(True, {"class": ["job-position", "job-title"]})
+    job_location = soup.find_all(True, {"class": ["job-location"]})
+    job_deadline = soup.find_all(True, {"datetime": [True]})
+    for a, b, c in zip(job_position, job_location, job_deadline):
+        stack.append(dict(position=a.text.strip(), location=b.text.strip(), deadline=c.text.strip()))
+
+# print(stack)
+
+for i in stack:
+    print(i)
