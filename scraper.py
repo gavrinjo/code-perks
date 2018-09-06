@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup as bs
 from requests import get
 import re
 
-keyword = input("Input search keyword ->->->->->")
-base_url = f"https://www.moj-posao.net/Pretraga-Poslova/?keyword={keyword}&area=2&category="
+#keyword = input("Input search keyword ->->->->->")
+base_url = f"https://www.moj-posao.net/Pretraga-Poslova/?keyword=vozac&area=2&category="
 
 print("\nsearch results\n")
 
@@ -19,22 +19,35 @@ except AttributeError:
 # Build up a URL list
 url_list = ["{}&page={}".format(base_url, str(page)) for page in range(1, num_pages + 1)]
 
-"""
-for i in html_soup.find_all(True, {"class": ["job-position"]}):
-    print(i.a.get("href"))
-"""
-# Make dictionary
 stack = []
+company_lst=[]
+position_lst=[]
+location_lst=[]
+deadline_lst=[]
+href_lst=[]
+
 for url in url_list:
     rp = get(url)
     soup = bs(rp.text, "html.parser")
-    job_position = soup.find_all(True, {"class": ["job-position", "job-title"]})
-    job_location = soup.find_all(True, {"class": ["job-location"]})
-    job_deadline = soup.find_all(True, {"datetime": [True]})
-    for a, b, c in zip(job_position, job_location, job_deadline):
-        stack.append(dict(position=a.text.strip(), location=b.text.strip(), deadline=c.text.strip()))
+    for company in soup.find_all(True, {"class": ["job-position"]}):
+        company_lst.append(company.parent.parent.parent.a.img.get("title"))
+    for company in soup.find_all(True, {"class": ["job-company"]}):
+        company_lst.append(company.text.strip())
+    for position in soup.find_all(True, {"class": ["job-position", "job-title"]}):
+        position_lst.append(position.text.strip())
+    for location in soup.find_all(True, {"class": ["job-location"]}):
+        location_lst.append(location.text.strip())
+    for deadline in soup.find_all(True, {"datetime": [True]}):
+        deadline_lst.append(deadline.text.strip())
+    for href in soup.find_all(True, {"class": ["job-position", "job-title"]}):
+        if href.parent.get("href") is not None:
+          href_lst.append(href.parent.get("href"))
+        else:
+          href_lst.append(href.a.get("href"))
 
-# print(stack)
+for a, b, c, d, e in zip(company_lst, position_lst, location_lst, deadline_lst, href_lst):
+        stack.append(dict(company=a, position=b, location=c, deadline=d, href=e))
 
 for i in stack:
-    print(i)
+  print(i)
+
