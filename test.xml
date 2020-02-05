@@ -182,7 +182,28 @@
 		<city name="Ostalo Izvan EU" code="13050"/>
 	</county>
 	<county name="Karlovačka" code="1155">
-
+<city name="Barilovići" code="1306"/>
+<city name="Bosiljevo" code="1307"/>
+<city name="Cetingrad" code="1308"/>
+<city name="Draganić" code="1309"/>
+<city name="Duga Resa" code="1310"/>
+<city name="Generalski Stol" code="1311"/>
+<city name="Josipdol" code="1312"/>
+<city name="Karlovac" code="1313"/>
+<city name="Karlovac - Okolica" code="1314"/>
+<city name="Krnjak" code="1315"/>
+<city name="Lasinja" code="1316"/>
+<city name="Netretić" code="1317"/>
+<city name="Ogulin" code="1318"/>
+<city name="Ozalj" code="1319"/>
+<city name="Plaški" code="1320"/>
+<city name="Rakovica" code="1321"/>
+<city name="Ribnik" code="1322"/>
+<city name="Saborsko" code="1323"/>
+<city name="Slunj" code="1324"/>
+<city name="Tounj" code="1325"/>
+<city name="Vojnić" code="1326"/>
+<city name="Žakanje" code="1327"/>
 	</county>
 	<county name="Koprivničko-križevačka" code="1156">
 		<city name="Drnje" code="1328"/>
