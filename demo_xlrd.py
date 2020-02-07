@@ -18,6 +18,9 @@ tree = et.parse('test.xml')
 root = tree.getroot()
 
 
+
+
+
 def city():
     for county in root:
         if county.attrib["name"] == args.z:
