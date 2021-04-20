@@ -4,6 +4,8 @@ printa zadan broj prim brojeva
 
 from math import sqrt
 n = int(input("enter number of prime numbers you want to print out?\n"))
+
+
 def isPrime(n):
     if n == 2:
         return True
@@ -14,6 +16,7 @@ def isPrime(n):
             return False
     else:
         return True
+
 
 def primesList(num):
     primes = [2,]
@@ -26,6 +29,7 @@ def primesList(num):
             noPrimes += 1
         testNum += 1
     return primes
+
 
 for i in primesList(n):
     print(primesList(n).index(i)+1,"-", i)

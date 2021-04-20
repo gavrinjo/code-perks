@@ -36,6 +36,10 @@ class Article(Source):
     def __init__(self, url):
         Source.__init__(self, url)
 
+    def item(self):
+        for i in raw_data.bs_data():
+            pass
+
 
 base_url = "https://www.oglasnik.hr/stanovi-prodaja"
 # ?page=2
